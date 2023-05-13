@@ -32,10 +32,28 @@ export const putDb = async (content) => {
   const result = await request;
   console.log('Data saved to the database', result);
 
-}
+};
 
 // TODO: Add logic for a method that gets all the content from the database
 export const getDb = async () =>{
-  
-} 
+  console.log('GET from the database');
+
+  // Creates a connection to the database and the version to be used
+  const editorDb = await openDB('jate', 1);
+
+  // Creates transaction and specifies the database and data privileges
+  const tx = editorDb.transaction('jate', 'readonly');
+
+  // Open desired object store
+  const store = tx.objectStore('jate');
+
+  // Gets all data in the database
+  const request = store.getAll();
+
+  // Gets confirmation of request
+  const result = await request;
+  console.log('result.value', result);
+  return result;
+
+};
 initdb();
